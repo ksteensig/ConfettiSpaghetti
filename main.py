@@ -16,9 +16,9 @@ def scrape(dest, subreddit, resultsize = 5, **generator_kwargs):
 
     videos = it.starmap(save_file, saves)
     
-    return list(videos)
+    return videos, dest
 
 ts = str(time.time()) 
 
-vids = scrape("./funny/" + ts, "funny", 5)
-convert(vids)
+vids, dest = scrape("./cats/" + ts, "cats", 3)
+convert(vids, dest)

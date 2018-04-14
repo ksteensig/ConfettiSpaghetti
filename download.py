@@ -12,6 +12,7 @@ class Video:
         self.filename = filename
 
 def download_file(src):
+    print("Now downloading: %r" % src)
     for i in range(1,100):
         r = requests.get(src)
         if r.status_code == 200:
