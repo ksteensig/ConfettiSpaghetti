@@ -1,5 +1,6 @@
 from download import Video, download_file, save_file
-from scrape import extract_links, sub2save
+from tts import tts
+from scrape import extract_links, sub2save, sub2sound
 from convert import convert
 import itertools as it
 from operator import itemgetter
@@ -15,10 +16,14 @@ def scrape(dest, subreddit, resultsize = 5, **generator_kwargs):
     saves = it.starmap(sub2save, subs)
 
     videos = it.starmap(save_file, saves)
-    
-    return videos, dest
 
-ts = str(time.time()) 
+    texts = it.starmap(sub2sound, subs)
 
-vids, dest = scrape("./cats/" + ts, "cats", 3)
-convert(vids, dest)
+    sounds = it.starmap(tts, texts)
+
+    return videos, sounds, dest
+
+ts = str(time.time())
+
+vids, snds, dest = scrape("./cats/" + ts, "cats", 3)
+convert(vids, snds, dest)

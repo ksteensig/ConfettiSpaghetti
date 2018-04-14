@@ -32,12 +32,21 @@ def extract_redditv(sm):
     return sm.media["reddit_video"]["fallback_url"]
 
 def submission_transform(sm):
-    return (sm.title, extract_submission(sm))
+    try:
+        comment = sm.comments[0].body
+    except IndexError:
+        comment = ''
+    return sm.title, extract_submission(sm), comment
 
 def extract_links(subreddit, resultsize = 100, **generator_kwargs):
     #Force None as default limit
     generator_kwargs["limit"] = generator_kwargs.get("limit")
     return it.islice(filter(lambda sm: sm[1] is not None, map(submission_transform, subreddit_iterator(subreddit, **generator_kwargs))), resultsize)
+
+    #tts(dest, filename, title, top_comment)
+
+def sub2sound(name, dest, sm):
+    return dest, name, sm[0], sm[2]
 
 def sub2save(name, dest, sm):
     return dest, sm[0], sm[1], name, download_file(sm[1])

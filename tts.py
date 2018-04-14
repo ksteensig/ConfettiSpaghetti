@@ -1,7 +1,7 @@
 from gtts import gTTS
 
 class TextToSpeech:
-    def __init__(dest, filename, title, top_comment):
+    def __init__(self, dest, filename, title, top_comment):
         self.dest = dest
         self.filename = filename
         self.title = title
