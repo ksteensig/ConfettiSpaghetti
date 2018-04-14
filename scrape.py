@@ -35,7 +35,7 @@ def extract_redditv(sm):
 def submission_transform(sm):
     try:
         comment = sm.comments[0].body
-        comment = re.sub(r'^https?:\/\/.*[\r\n]*', '', comment, flags=re.MULTILINE)
+        comment = re.sub(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*', '', comment)
     except IndexError:
         comment = 'Upvoted'
     return sm.title, extract_submission(sm), comment

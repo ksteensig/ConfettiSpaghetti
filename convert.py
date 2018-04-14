@@ -19,15 +19,18 @@ def convert(videos, sounds, dest, tduration = 30):
 def process_clip(video, sound):
     base_clip = mp.VideoFileClip(video.dest + "/" + video.filename + ".mp4")
     base_clip = resize.resize(base_clip, width=640, height=480)
-    txt_clip = mp.TextClip(video.title, fontsize=50, color="white", font="arial", method="caption", stroke_color="black", stroke_width=1.5, size=(base_clip.size[0],None))
-    txt_clip = txt_clip.set_duration(3).set_position("center")
+    title_clip = mp.TextClip(sound.title, fontsize=50, color="white", font="arial", method="caption", size=(base_clip.size[0],None))
+    title_clip = title_clip.on_color(size=(title_clip.size[0] + 10,title_clip.size[1] + 10), col_opacity=0.5).set_duration(3).set_position("center")
+    comment_clip = mp.TextClip(sound.top_comment, fontsize=20, color="white", method="caption", size=(base_clip.size[0],None)).on_color(col_opacity=0.5)
+    comment_clip = comment_clip.set_duration(3).set_start(base_clip.duration / 2).set_position("bottom")
+
 
     title_tts = mp.AudioFileClip(sound.dest + "/title" + sound.filename + ".mp3").set_start(0)
     comment_tts = mp.AudioFileClip(sound.dest + "/comment" + sound.filename + ".mp3").set_start(base_clip.duration / 2)
 
     audio = mp.CompositeAudioClip([title_tts, comment_tts])
 
-    clip = mp.CompositeVideoClip([base_clip, txt_clip])
+    clip = mp.CompositeVideoClip([base_clip, title_clip, comment_clip])
     return clip.set_audio(audio)
 
 '''
