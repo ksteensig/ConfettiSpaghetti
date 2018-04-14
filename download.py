@@ -1,7 +1,5 @@
 import requests
 
-#content_type = ['.mp4', '.gifv', '.webm']
-
 class Video:
     def __init__(self, dest, title, src):
         self.dest = dest
@@ -12,8 +10,8 @@ class Video:
 def download_file(dest, title, src):
     r = requests.get(src)
     if r.status_code == 200:
-        vid = Video(dest, title, src, ct)
-        with open(dest + title.replace(' ', '') + ct, 'wb') as f:
+        vid = Video(dest, title, src)
+        with open(dest + title.replace(' ', '') + '.mp4', 'wb') as f:
             f.write(r.content)
         return vid
     return None

@@ -1,7 +1,7 @@
 from imgurpython import ImgurClient
 from keys import client 
 
-content_types = ['.mp4', '.gifv', '.webm']
+content_types = ['.mp4', '.webm']
 
 def imgur_parse_link(link):
     if 'imgur' in link:
