@@ -1,12 +1,17 @@
-from download import Video, download_file, content_type
-from scrape import subreddit_iterator, extract_submission
+from download import Video, download_file, save_file
+from scrape import extract_links, sub2save
+import itertools as it
+from operator import itemgetter
 
-def scrape(subreddit)
-    urls = []
-    vids = [] 
+def scrape(dest, subreddit, resultsize = 100, **generator_kwargs):
+    videos = []
 
-    for u in urls:
-        v = download_file('./' + subreddit, u[0], u[1])
-        vids.append(v)
+    links = extract_links(subreddit, resultsize, **generator_kwargs)
+
+    subs = zip(map(str, it.count()), it.repeat(dest), links)
+
+    saves = map(sub2save, *subs)
+
+    videos = map(save_file, *saves)
     
-    return vids 
+    return videos
