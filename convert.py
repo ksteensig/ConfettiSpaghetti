@@ -3,7 +3,16 @@ from moviepy.video.fx import resize
 from download import Video
 
 def convert(videos, dest):
-    clips = list(map(process_clip, videos))
+    acc = 0
+    clips = []
+   
+    for v in videos:
+        c = process_clip(v)
+        acc += c.duration
+        clips.append(c)
+        if acc > 600:
+            break
+    
     output = mp.concatenate_videoclips(clips, method="compose")
     output.write_videofile(dest + "/" + "output.mp4")
 
