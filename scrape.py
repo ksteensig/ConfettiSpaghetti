@@ -1,14 +1,16 @@
 import praw
 import itertools as it
 import keys
+import time
 from imgur import imgur_parse_link
+from download import download_file
 
 _SORTINGS = ["controversial", "gilded", "hot", "new", "rising", "top"]
 _TIMEFILTERS = ["day", "hour", "month", "week", "year", "all"]
 
 def subreddit_iterator(subreddit, sorting="hot", time_filter="all", **generator_kwargs):
-    assert(sorting in _SORTINGS)
-    assert(time_filter in _TIMEFILTERS)
+    assert sorting in _SORTINGS, "Invalid sorting: %r" % sorting
+    assert time_filter in _TIMEFILTERS, "Invalid timefilter: %r" % time_filter
     genfunc = getattr(keys.reddit.subreddit(subreddit), sorting)
     if sorting in ["controversial", "top"]:
         return genfunc(time_filter, **generator_kwargs)
@@ -36,6 +38,9 @@ def extract_links(subreddit, resultsize = 100, **generator_kwargs):
     #Force None as default limit
     generator_kwargs["limit"] = generator_kwargs.get("limit")
     return it.islice(filter(lambda sm: sm[1] is not None, map(submission_transform, subreddit_iterator(subreddit, **generator_kwargs))), resultsize)
+
+def sub2save(name, dest, sm):
+    return dest, sm[0], sm[1], name, download_file(sm[1])
 
 results = extract_links("wholesomememes", resultsize = 10)
 
