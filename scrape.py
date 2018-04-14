@@ -2,6 +2,7 @@ import praw
 import itertools as it
 import keys
 import time
+import re
 from imgur import imgur_parse_link
 from download import download_file
 
@@ -34,14 +35,15 @@ def extract_redditv(sm):
 def submission_transform(sm):
     try:
         comment = sm.comments[0].body
+        comment = re.sub(r'^https?:\/\/.*[\r\n]*', '', comment, flags=re.MULTILINE)
     except IndexError:
-        comment = ''
+        comment = 'Upvoted'
     return sm.title, extract_submission(sm), comment
 
-def extract_links(subreddit, resultsize = 100, **generator_kwargs):
+def extract_links(subreddit, **generator_kwargs):
     #Force None as default limit
     generator_kwargs["limit"] = generator_kwargs.get("limit")
-    return it.islice(filter(lambda sm: sm[1] is not None, map(submission_transform, subreddit_iterator(subreddit, **generator_kwargs))), resultsize)
+    return filter(lambda sm: sm[1] is not None, map(submission_transform, subreddit_iterator(subreddit, **generator_kwargs)))
 
     #tts(dest, filename, title, top_comment)
 

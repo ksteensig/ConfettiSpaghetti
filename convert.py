@@ -6,8 +6,8 @@ def convert(videos, sounds, dest):
     acc = 0
     clips = []
    
-    for v in videos:
-        c = process_clip(v)
+    for v, s in zip(videos, sounds):
+        c = process_clip(v, s)
         acc += c.duration
         clips.append(c)
         if acc > 600:
@@ -16,14 +16,14 @@ def convert(videos, sounds, dest):
     output = mp.concatenate_videoclips(clips, method="compose")
     output.write_videofile(dest + "/" + "output.mp4")
 
-def process_clip(video):
+def process_clip(video, sound):
     base_clip = mp.VideoFileClip(video.dest + "/" + video.filename + ".mp4")
     base_clip = resize.resize(base_clip, width=640, height=480)
     txt_clip = mp.TextClip(video.title, fontsize=50, color="white", font="arial", method="caption", stroke_color="black", stroke_width=1.5, size=(base_clip.size[0],None))
     txt_clip = txt_clip.set_duration(3).set_position("center")
 
-    title_tts = mp.AudioFileClip(video.dest + "/title" + video.filename + ".mp3").set_start(0)
-    comment_tts = mp.AudioFileClip(video.dest + "/comment" + video.filename + ".mp3").set_start(base_clip.duration / 2)
+    title_tts = mp.AudioFileClip(sound.dest + "/title" + sound.filename + ".mp3").set_start(0)
+    comment_tts = mp.AudioFileClip(sound.dest + "/comment" + sound.filename + ".mp3").set_start(base_clip.duration / 2)
 
     audio = mp.CompositeAudioClip([title_tts, comment_tts])
 

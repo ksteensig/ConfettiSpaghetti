@@ -6,18 +6,20 @@ import itertools as it
 from operator import itemgetter
 import time
 
-def scrape(dest, subreddit, resultsize = 5, **generator_kwargs):
+def scrape(dest, subreddit, **generator_kwargs):
     videos = []
 
-    links = extract_links(subreddit, resultsize, **generator_kwargs)
+    links = extract_links(subreddit, **generator_kwargs)
 
     subs = zip(map(str, it.count()), it.repeat(dest), links)
 
-    saves = it.starmap(sub2save, subs)
+    splitsubs = it.tee(subs)
+
+    saves = it.starmap(sub2save, splitsubs[0])
 
     videos = it.starmap(save_file, saves)
 
-    texts = it.starmap(sub2sound, subs)
+    texts = it.starmap(sub2sound, splitsubs[1])
 
     sounds = it.starmap(tts, texts)
 
@@ -25,5 +27,5 @@ def scrape(dest, subreddit, resultsize = 5, **generator_kwargs):
 
 ts = str(time.time())
 
-vids, snds, dest = scrape("./cats/" + ts, "cats", 3)
+vids, snds, dest = scrape("./cats/" + ts, "cats")
 convert(vids, snds, dest)
