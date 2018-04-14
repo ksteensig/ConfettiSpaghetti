@@ -3,15 +3,17 @@ from scrape import extract_links, sub2save
 import itertools as it
 from operator import itemgetter
 
-def scrape(dest, subreddit, resultsize = 100, **generator_kwargs):
+def scrape(dest, subreddit, resultsize = 5, **generator_kwargs):
     videos = []
 
     links = extract_links(subreddit, resultsize, **generator_kwargs)
 
     subs = zip(map(str, it.count()), it.repeat(dest), links)
 
-    saves = map(sub2save, *subs)
+    saves = it.starmap(sub2save, subs)
 
-    videos = map(save_file, *saves)
+    videos = it.starmap(save_file, saves)
     
-    return videos
+    return list(videos)
+
+scrape("./funny", "funny", 5)

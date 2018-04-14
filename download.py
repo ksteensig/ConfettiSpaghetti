@@ -17,7 +17,7 @@ def download_file(src):
     assert False, "Could not download: %r" % src
 
 def save_file(dest, title, src, filename, content):
-    with open(dest + filename + '.mp4'):
+    with open(dest + '/' + filename + '.mp4',"w") as f:
         f.write(content)
     return Video(dest, title, src, filename)
 

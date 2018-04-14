@@ -41,8 +41,3 @@ def extract_links(subreddit, resultsize = 100, **generator_kwargs):
 
 def sub2save(name, dest, sm):
     return dest, sm[0], sm[1], name, download_file(sm[1])
-
-results = extract_links("wholesomememes", resultsize = 10)
-
-for sm in results:
-    print(sm)
