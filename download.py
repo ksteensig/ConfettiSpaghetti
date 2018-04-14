@@ -1,5 +1,8 @@
 import requests
 from time import sleep
+import os
+import errno
+import io
 
 class Video:
     def __init__(self, dest, title, src, filename):
@@ -17,7 +20,9 @@ def download_file(src):
     assert False, "Could not download: %r" % src
 
 def save_file(dest, title, src, filename, content):
-    with open(dest + '/' + filename + '.mp4',"w") as f:
+    fp = dest + '/' + filename + '.mp4'
+    os.makedirs(os.path.dirname(fp), exist_ok=True) 
+    with io.FileIO(fp, "wb") as f:
         f.write(content)
     return Video(dest, title, src, filename)
 

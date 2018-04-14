@@ -2,6 +2,7 @@ from download import Video, download_file, save_file
 from scrape import extract_links, sub2save
 import itertools as it
 from operator import itemgetter
+import time
 
 def scrape(dest, subreddit, resultsize = 5, **generator_kwargs):
     videos = []
@@ -16,4 +17,4 @@ def scrape(dest, subreddit, resultsize = 5, **generator_kwargs):
     
     return list(videos)
 
-scrape("./funny", "funny", 5)
+scrape("./funny/" + str(time.time()), "funny", 5)
