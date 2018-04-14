@@ -2,7 +2,7 @@ import moviepy.editor as mp
 from moviepy.video.fx import resize
 from download import Video
 
-def convert(videos, sounds, dest):
+def convert(videos, sounds, dest, tduration = 30):
     acc = 0
     clips = []
    
@@ -10,7 +10,7 @@ def convert(videos, sounds, dest):
         c = process_clip(v, s)
         acc += c.duration
         clips.append(c)
-        if acc > 600:
+        if acc > tduration:
             break
     
     output = mp.concatenate_videoclips(clips, method="compose")
