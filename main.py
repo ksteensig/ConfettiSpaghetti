@@ -1,5 +1,5 @@
 from download import Video, download_file, content_type
-from reddit import subreddit_iterator, extract_submission
+from scrape import subreddit_iterator, extract_submission
 
 def scrape(subreddit)
     urls = []
