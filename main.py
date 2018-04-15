@@ -27,5 +27,5 @@ def scrape(dest, subreddit, **generator_kwargs):
 
 ts = str(time.time())
 
-vids, snds, dest = scrape("./cats/" + ts, "cats")
+vids, snds, dest = scrape("./totallynotrobots/" + ts, "totallynotrobots")
 convert(vids, snds, dest)
