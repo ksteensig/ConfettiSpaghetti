@@ -19,7 +19,9 @@ def subreddit_iterator(subreddit, sorting="hot", time_filter="all", **generator_
         return genfunc(**generator_kwargs)
 
 def extract_submission(sm):
-    if sm.is_video:
+    if re.search(r"nsfw", sm.title, re.IGNORECASE):
+        return None
+    elif sm.is_video:
         return extract_redditv(sm)
     elif sm.domain in ["imgur.com", "i.imgur.com"]:
         return extract_imgur(sm)
