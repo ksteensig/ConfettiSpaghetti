@@ -36,7 +36,7 @@ def submission_transform(sm):
     try:
         comment = sm.comments[0].body
         comment = re.sub(r'\[*\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*\]*', '', comment, flags=re.MULTILINE)
-        comment = re.sub('\s*(.*)\s*', r'\1', comment, flags=re.MULTILINE)
+        comment = re.sub('^\s*(.*)\s*$', r'\1', comment, flags=re.MULTILINE)
     except IndexError:
         comment = 'Upvoted!'
     return sm.title, extract_submission(sm), comment
