@@ -1,0 +1,12 @@
+from imgurpython import ImgurClient
+import praw 
+
+client_id = ''
+client_secret = ''
+client = ImgurClient(client_id, client_secret)
+
+reddit = praw.Reddit(client_id='',
+                     client_secret='',
+                     user_agent='',
+                     username="",
+                     password="")
